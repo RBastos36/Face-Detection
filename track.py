@@ -56,6 +56,8 @@ class Detection():
         self.stamp = stamp
         self.name = name
 
+    
+
     def draw(self, image, color, draw_position='bottom', text=None):
         start_point = (self.left, self.top)
         end_point = (self.right, self.bottom)
