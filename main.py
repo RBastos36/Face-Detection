@@ -1,8 +1,8 @@
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
-# Nome 1
-# Nome 2
-# Nome 3
+# Afonso Simões, nMec100090
+# João Nogueiro, nMec111807
+# Ricardo Bastos, nMec103983
 
 import copy
 # import csv
@@ -16,6 +16,7 @@ from track import Detection, Track, computeIOU
 # from colorama import Fore, Back, Style
 import os
 import pyttsx3
+from matplotlib import pyplot as plot
 
 
 def main():
@@ -29,6 +30,8 @@ def main():
     known_face_encodings = []
     known_face_names = []
 
+    database_photos = []
+
     # Read database of saved images
     if len(os.listdir("Database")) != 0:
         for file in os.listdir("Database"):
@@ -40,12 +43,14 @@ def main():
                 image_encoding = face_recognition.face_encodings(image)[0]
                 known_face_encodings.append(image_encoding)
                 known_face_names.append(file.rsplit('.', 1)[0].capitalize())
+                database_photos.append(image)
 
     # Initialize some variables
     face_locations = []
     face_encodings = []
     face_names = []
     process_this_frame = True
+    len_old_database = 0
 # --------------------------------------
     hellos = []
     engine = pyttsx3.init()
@@ -88,8 +93,8 @@ def main():
             # Find all the faces and face encodings in the current frame of video
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-            print(face_locations)
-            print(face_encodings)
+            # print(face_locations)
+            # print(face_encodings)
 
             face_names = []
 
@@ -121,6 +126,7 @@ def main():
                     image_encoding = face_recognition.face_encodings(image)[0]
                     known_face_encodings.append(image_encoding)
                     known_face_names.append(name)
+                    database_photos.append(image)
 
                     face_names.append(name)
                 
@@ -202,17 +208,66 @@ def main():
         #         continue
         #     track.draw(image_gui)
 
+        # Show database
+        if len(database_photos) > len_old_database:
+            cv2.namedWindow('Database',cv2.WINDOW_NORMAL)
+            
+            # max_height = max(image.shape[0] for image in database_photos)
+            # combined_width = sum(image.shape[1] for image in database_photos)
+            # combined_image = np.zeros((max_height, combined_width, 3), dtype=np.uint8)
+
+            # current_width = 0
+            # for image in database_photos:
+            #     combined_image[:image.shape[0], current_width:current_width + image.shape[1]] = image
+            #     current_width += image.shape[1]
+
+            # data_show = np.ascontiguousarray(combined_image[:, :, ::-1])
+
+            images = copy.deepcopy(database_photos)
+            max_height = max(image.shape[0] for image in database_photos)
+            for i, image in enumerate(images):
+                if image.shape[0] < max_height:
+                    scale_factor = max_height / image.shape[0]
+                    images[i] = cv2.resize(image, (int(image.shape[1] * scale_factor), max_height))
+            
+            combined_width = sum(image.shape[1] for image in images)
+            combined_image = np.zeros((max_height, combined_width, 3), dtype=np.uint8)
+
+            current_width = 0
+            for image in images:
+                combined_image[:image.shape[0], current_width:current_width + image.shape[1]] = image
+                current_width += image.shape[1]
+
+            data_show = np.ascontiguousarray(combined_image[:, :, ::-1])
+
+            cv2.imshow('Database', data_show)
+            len_old_database = len(database_photos)
+
+
+            # fig = plot.figure(figsize=(10, 7))
+            # rows = len(database_photos)
+            # columns = 1
+            # for n in range(int(len(database_photos))):
+            #     fig.add_subplot(rows, columns, n + 1)
+            #     plot.imshow(database_photos[n])
+            #     plot.axis('off')
+            #     plot.title(known_face_names[n])
+            #     plot.tight_layout()
+
+            # plot.show()
+
+
 
         if video_frame_number == 0:
-            cv2.namedWindow('GUI',cv2.WINDOW_NORMAL)
-            cv2.resizeWindow('GUI', int(width), int(height))
+            cv2.namedWindow('FaceTracker',cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('FaceTracker', int(width), int(height))
 
         # Add frame number and time to top left corner
         cv2.putText(image_gui, 'Frame ' + str(video_frame_number) + ' Time ' + str(frame_stamp) + ' secs',
                     (10,40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2, cv2.LINE_AA)
 
         # Display the resulting image
-        cv2.imshow('GUI',image_gui)
+        cv2.imshow('FaceTracker',image_gui)
         
         # Hit 'q' on the keyboard to quit
         if cv2.waitKey(1) & 0xFF == ord('q') :
