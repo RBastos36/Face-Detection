@@ -1,6 +1,6 @@
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
-# Afonso Simões, nMec100090
+# Afonso Miranda, nMec100090
 # João Nogueiro, nMec111807
 # Ricardo Bastos, nMec103983
 
@@ -8,7 +8,7 @@ import copy
 # import csv
 # import math
 # import time
-from random import randint
+from random import random
 import face_recognition
 import cv2
 import numpy as np
@@ -53,7 +53,9 @@ def main():
     len_old_database = 0
 # --------------------------------------
     hellos = []
-    engine = pyttsx3.init()
+    engine = pyttsx3.init('dummy')
+
+    print(engine)
 
     # Parameters
     distance_threshold = 100
