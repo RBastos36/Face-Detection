@@ -13,7 +13,7 @@ import face_recognition
 import cv2
 import numpy as np
 from track import Detection, Track, computeIOU
-from gui import ImageApp
+
 # from colorama import Fore, Back, Style
 import os, sys
 import pyttsx3
