@@ -13,10 +13,13 @@ import face_recognition
 import cv2
 import numpy as np
 from track import Detection, Track, computeIOU
+from gui import ImageApp
 # from colorama import Fore, Back, Style
-import os
+import os, sys
 import pyttsx3
 from matplotlib import pyplot as plot
+
+from threading import Thread    # Threading library for parallel tasks
 
 
 def main():
@@ -76,6 +79,8 @@ def main():
         if result is False:
             break
 
+        image_rgb = cv2.flip(image_rgb, 1)
+
         frame_stamp = round(float(cap.get(cv2.CAP_PROP_POS_MSEC))/1000,2)
         height, width, _ = image_rgb.shape
         image_gui = copy.deepcopy(image_rgb) # good practice to have a gui image for drawing
@@ -89,7 +94,6 @@ def main():
             small_frame = cv2.resize(image_rgb, (0, 0), fx=0.5, fy=0.5)
 
             # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-            # rgb_small_frame = small_frame[:, :, ::-1]
             rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
 
             # Find all the faces and face encodings in the current frame of video
@@ -125,12 +129,17 @@ def main():
                     hellos.append(name)
                     cv2.imwrite("Database/" + name.lower() + ".jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
                     image = face_recognition.load_image_file("Database/" + name.lower() + ".jpg")
-                    image_encoding = face_recognition.face_encodings(image)[0]
-                    known_face_encodings.append(image_encoding)
-                    known_face_names.append(name)
-                    database_photos.append(image)
+                    
+                    try:
+                        image_encoding = face_recognition.face_encodings(image)[0]
+                        known_face_encodings.append(image_encoding)
+                        known_face_names.append(name)
+                        database_photos.append(image)
+                        face_names.append(name)
 
-                    face_names.append(name)
+                    except IndexError:
+                        print("Database loading ERROR! Deleting corrupted file!")
+                        os.remove("Database/" + name.lower() + ".jpg")
                 
 
         process_this_frame = not process_this_frame
@@ -272,11 +281,33 @@ def main():
         cv2.imshow('FaceTracker',image_gui)
         
         # Hit 'q' on the keyboard to quit
-        if cv2.waitKey(1) & 0xFF == ord('q') :
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
         video_frame_number += 1
 
-    
+
+def end_prog():
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        sys.exit()
+
+
 if __name__ == "__main__":
-    main()
+
+    thread_1 = Thread(target=main)
+    thread_2 = Thread(target=ImageApp().run)
+    thread_3 = Thread(target=end_prog)
+
+    thread_1.setDaemon(True)
+    thread_2.setDaemon(True)
+    thread_3.setDaemon(True)
+
+    thread_1.start()
+    thread_2.start()
+    thread_3.start()
+
+    thread_1.join()
+    thread_2.join()
+    thread_3.join()
+
+    exit()
