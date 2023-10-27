@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
-# Afonso Simões, nMec100090
+# Afonso Miranda, nMec100090
 # João Nogueiro, nMec111807
 # Ricardo Bastos, nMec103983
 
 
 import copy
+# import csv
+# import math
+# import time
+from random import randint
 import face_recognition
 import cv2
 import numpy as np
-from track import Detection
+from track import Detection, Track, computeIOU
 from gui import ImageApp
-import os
+# from colorama import Fore, Back, Style
+import os, sys
 import pyttsx3
 from matplotlib import pyplot as plot
 from threading import Thread    # Threading library for parallel tasks
@@ -51,6 +56,12 @@ def main():
     len_old_database = 0
     hellos = []
     engine = pyttsx3.init()
+
+    # Parameters
+    distance_threshold = 100
+    deactivate_threshold = 5.0 # secs
+    iou_threshold = 0.3
+
     video_frame_number = 0
 
 
