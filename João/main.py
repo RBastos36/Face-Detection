@@ -56,6 +56,7 @@ def menu():
                 cv2.imwrite("Database/" + name + ".jpg", Unknown_image[int(person_idx)])
                 image = face_recognition.load_image_file("Database/" + name + ".jpg")
                 image_encoding = face_recognition.face_encodings(image)[0]
+               
                 known_face_encodings.append(image_encoding)
                 known_face_names.append(name)
                 database_photos.append(image)
@@ -65,7 +66,11 @@ def menu():
                 Unknown_image.pop(int(person_idx))
                 
             elif op == '2':
-                print("What name do you want to change??")
+                if len(known_face_names) == 0:
+                    print("No have names in database")
+                    continue
+
+                print("What name do you want to change?")
                 
                 for i in range(len(known_face_names)):
                     print(f"  ({i}) {known_face_names[i]}")
@@ -79,7 +84,7 @@ def menu():
 
                 new_name = str(input("Press 'q' if you want to cancel\nNew name? "))
                 if new_name == 'q':
-                    break
+                    continue
                 old_name = known_face_names[person_idx]
                 known_face_names[person_idx] = new_name
 
@@ -91,7 +96,7 @@ def menu():
                 print("Exit program...")
                 break
             else:
-                print("Opção inválida. Tente novamente.")
+                print("Invalid option! Try again.")
 
 def main():
 
@@ -101,7 +106,7 @@ def main():
 
     cap = cv2.VideoCapture(0)
 
-    # Global variables, temporariamente...espero
+    # Global variables
     global known_face_names
     global known_face_encodings
     global Unknown_face_names
@@ -109,7 +114,6 @@ def main():
     global Unknown_image
     global database_photos
     global data_show
-    #Podem ser subtituidos por uma função à parte:
     global engine
     global hellos
     
@@ -146,7 +150,8 @@ def main():
     
     # Initialization voice greeting
     hellos = []
-    engine = pyttsx3.init('dummy')
+    engine = pyttsx3.init()
+    print(engine)
     video_frame_number = 0
 
     print("""
@@ -186,7 +191,6 @@ def main():
             small_frame = cv2.resize(image_rgb, (0, 0), fx=0.5, fy=0.5)
 
             # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-            # rgb_small_frame = small_frame[:, :, ::-1] 
             rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1]) #Invert the color channels
 
             # Find all the faces and face encodings in the current frame of video
@@ -227,10 +231,23 @@ def main():
                 if name == None:
                     name = "Unknown_" + str(Unknown_num)
                     Unknown_image.append(small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
-                    Unknown_face_encodings.append(face_encoding)
-                    Unknown_face_names.append(name)
                     Unknown_num +=1
 
+                     # Exception handling for when the saved detection is "corrupted" and saves image without recognisable face
+                    try:
+                       Unknown_face_encodings.append(face_encoding)
+                       Unknown_face_names.append(name)
+                       cv2.imwrite("Database/TESTE.jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
+                       image = face_recognition.load_image_file("Database/TESTE.jpg")
+                       face_recognition.face_encodings(image)[0]
+                       os.remove("Database/TESTE.jpg")
+
+                    except IndexError:
+                        # print("Database loading ERROR! Deleting corrupted file!")
+                        Unknown_face_names.pop(-1) 
+                        Unknown_face_encodings.pop(-1)
+                        Unknown_image.pop(-1)
+                
                 face_names.append(name)
 
         process_this_frame = not process_this_frame 
@@ -281,7 +298,7 @@ def main():
             
             # Put the names in the database image view
             for i in range(len(images)):
-                cv2.rectangle(images[i], (0,0), (70,20), (0, 0, 0), cv2.FILLED)
+                cv2.rectangle(images[i], (0,0), (90,20), (0, 0, 0), cv2.FILLED)
                 cv2.putText(images[i], str(known_face_names[i]), (5,17), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
             current_width = 0
