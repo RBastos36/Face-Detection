@@ -7,16 +7,11 @@
 
 
 import copy
-# import csv
-# import math
-# import time
-from random import randint
 import face_recognition
 import cv2
 import numpy as np
-from track import Detection, Track, computeIOU
+from track import Detection
 from gui import ImageApp
-# from colorama import Fore, Back, Style
 import os, sys
 import pyttsx3
 from matplotlib import pyplot as plot
@@ -56,12 +51,6 @@ def main():
     len_old_database = 0
     hellos = []
     engine = pyttsx3.init()
-
-    # Parameters
-    distance_threshold = 100
-    deactivate_threshold = 5.0 # secs
-    iou_threshold = 0.3
-
     video_frame_number = 0
 
 
