@@ -72,7 +72,7 @@ npm install  # or any other package manager and command based on your project
 ```
 4. Correr o programa:
 ```bash
-# Additional setup steps, if any
+./main.py
 ```
 
 Se os passos acima foram seguidos, o programa deve correr sem problemas.
