@@ -88,7 +88,7 @@ print("Hello, World!")
 ---
 ## Authors
 
-Meet the contributors who made this project:
+Estes foram os contribuidores para este projeto:
 
 - **[Afonso Miranda](https://github.com/afonsosmiranda)**
   - Information:
@@ -100,7 +100,7 @@ Meet the contributors who made this project:
     - Email:
     - nMec: 111807
 
-- **[Bob Johnson](https://github.com/RBastos36)**
+- **[Ricardo Bastos](https://github.com/RBastos36)**
   - Information:
     - Email: r.bastos@ua.pt
     - nMec: 103983
