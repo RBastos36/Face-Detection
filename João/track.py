@@ -7,6 +7,8 @@
 import cv2
 import numpy as np
 
+
+# Class to define and draw a detection
 class Detection():
     def __init__(self, left, right, top, bottom, id, stamp, name):
         self.left = left*2
