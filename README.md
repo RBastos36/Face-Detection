@@ -68,19 +68,19 @@ Para a criação deste programa, recorreu-se à utilização de algumas bibliote
 
 O programa pode ser instalado seguindo os seguintes passos:
 
-1 Clonar o repositório.
+1. Clonar o repositório.
 ```bash
 git clone https://github.com/joaonogueiro/TP1_SAVI
 ```
-1 Alterar a diretória do projeto.
+1. Alterar a diretória do projeto.
 ```bash
 cd TP1_SAVI
 ```
-1 Instalar dependências.
+1. Instalar dependências.
 ```bash
 npm install  # or any other package manager and command based on your project
 ```
-1 Correr o programa.
+1. Correr o programa.
 ```bash
 # Additional setup steps, if any
 ```
