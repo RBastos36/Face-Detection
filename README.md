@@ -1,106 +1,108 @@
 # TP1 - Detetor de Caras
-Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - 2023/24
+Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade de Aveiro - 2023/24
 
-## Table of Contents
+## Índice
 
-- [Introduction](#introduction)
-- [Libraries Used](#libraries-used)
-- [Installation](#installation)
-- [Code Explanation](#code-explanation)
-- [Authors](#authors)
+- [Introdução](#introduction)
+- [Bibliotecas Usadas](#libraries-used)
+- [Instalação](#installation)
+- [Explicação do Código](#code-explanation)
+- [Autores](#authors)
 
 ---
-## Introduction
+## Introdução
 
-No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na Database, e questionando os desconhecidos sobre os seus nomes.
+<p align="justify"> No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na Database, e questionando os desconhecidos sobre os seus nomes. </p>
 
-<p align="center">
-  <img src="F3ubnBmXkAA2MAe.png" alt="Alt text">
-</p>
-
-<p align="center">
-Legenda da imagem 
-</p>
+[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/ce720d8c-52a7-4b54-b87b-4bc6f10ccda4)
 
 
 <p align="center">
-  <img src="89ba9f42123571.5947aba8033ef.gif" alt="Alt text">
-</p>
-
-<p align="center">
-Legenda do gif animado 
+Vídeo ilustrativo do funcionamento do programa 
 </p>
 
 
 ---
-## Libraries Used
+## Bibliotecas Usadas
 
 Para a criação deste programa, recorreu-se à utilização de algumas bibliotecas. Estas serão brevemente explicadas abaixo.
 
-- **Library Name 1**
-  - Description: Brief description of the first library.
-  - Installation:
+- **OpenCV**
+  - Descrição: OpenCV é uma biblioteca que existe em Python desenhada para resolver problemas de _computer vision_. 
+  - Instalação:
     ```bash
-    command to install the first library
+    sudo apt-get install python3-opencv
     ```
 
-- **Library Name 2**
-  - Description: Brief description of the second library.
-  - Installation:
+- **Face-Recognition**
+  - Descrição: Biblioteca de Python com comandos para reconhecer e manipular caras criada com modelos baseados em _deep learning_. 
+  - Instalação:
     ```bash
-    command to install the second library
+    pip3 install face_recognition
     ```
+
+- **PyTTSx3**
+  - Descrição: Esta é uma biblioteca de Python para fazer conversão de texto para voz, funcionando _offline_ e sendo compatível com Python 2 e 3.
+  - Instalação:
+    ```bash
+    pip install pyttsx3
+    ```
+
+- **Threading**
+  - Descrição: Esta bibioteca permite introduzir uma sequência de intruções num programa que podem ser executadas independentemente do restante processo.
+  - Instalação: Esta já vem disponível com a versão do Python 3.7.
 
 
 ---
-## Installation
+## Instalação
 
-Provide step-by-step instructions on how to install and set up your project. Include any prerequisites that users need to have installed.
+O programa pode ser instalado seguindo os seguintes passos:
 
+1. Clonar o repositório:
 ```bash
-# Clone the repository
 git clone https://github.com/joaonogueiro/TP1_SAVI
-
-# Change into the project directory
+```
+2. Alterar a diretória do projeto:
+```bash
 cd TP1_SAVI
-
-# Install dependencies
-npm install  # or any other package manager and command based on your project
-
-# Additional setup steps, if any
+```
+3. Correr o programa:
+```bash
+./main.py
 ```
 
----
-## Code Explanation 
+Se os passos acima foram seguidos, o programa deve correr sem problemas.
 
-Provide a concise explanation of your project.
-Provide a concise explanation of your project.
-Provide a concise explanation of your project.
+
+---
+## Explicação do Código 
+
+<p align="justify"> O código começa por verificar se existe alguma informação na base de dados, e se assim se verificar, lê a mesma. De seguida, inicializa a câmera e começa a tentar encontrar deteções de caras com os comandos abaixo, baseados na biblioteca <b>Face-Recognition</b>.</p>
 
 ```python
-def add_numbers(a, b):
-    return a + b
-
-print("Hello, World!")
+# Find all the faces and face encodings in the current frame of video
+face_locations = face_recognition.face_locations(rgb_small_frame)
+face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 ```
-
+<p align="justify">É na base destes comandos, que se baseiam em modelos extreamemte eficientes treinados com deep learning, que o programa irá funcionar. Aqui são encontradas todas as localizações de caras no _frame_ e sofrem um _encoding_ para posteriormente serem comparadas com as caras guardadas na <i>Database</i>. Se o programa encontrar um nível de parecença elevado com alguma das informações da base de dados, irá reconhecer e cumprimentar a pessoa detetada.</p>
+<p align="justify">Ao mesmo tempo, um menu no Terminal estará a correr em pararelo (usando a biblioteca <b>Threading</b>) onde se poderá dar nome às pessoas detetadas como desconhecidas e ainda alterar o nome de qualquer pessoa presente na <i>Database</i>.</p>
 
 ---
-## Authors
+## Autores
 
 Estes foram os contribuidores para este projeto:
 
 - **[Afonso Miranda](https://github.com/afonsosmiranda)**
-  - Information:
+  - Informação:
     - Email: afonsoduartem@ua.pt
-    - nMec: 100090
+    - Número Mecanográfico: 100090
 
 - **[João Nogueiro](https://github.com/joaonogueiro)**
-  - Information:
-    - Email:
-    - nMec: 111807
+  - Informação:
+    - Email: joao.nogueiro@ua.pt
+    - Número Mecanográfico: 111807
 
 - **[Ricardo Bastos](https://github.com/RBastos36)**
-  - Information:
+  - Informação:
     - Email: r.bastos@ua.pt
-    - nMec: 103983
+    - Número Mecanográfico: 103983
