@@ -136,9 +136,10 @@ def main():
     database_photos = []
 
     # Read database of saved images
-    if len(os.listdir("Database")) != 0:
-        for file in os.listdir("Database"):
-            if len(os.listdir("Database")) == 0:
+    directory_path = "Database"
+    if len(os.listdir(directory_path)) != 0:
+        for file in os.listdir(directory_path):
+            if len(os.listdir(directory_path)) == 0:
                 break
 
             if file.endswith(".jpg"):
