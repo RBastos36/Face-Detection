@@ -1,6 +1,6 @@
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
-# Afonso Simões, nMec100090
+# Afonso Miranda, nMec100090
 # João Nogueiro, nMec111807
 # Ricardo Bastos, nMec103983
 
