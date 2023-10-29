@@ -90,7 +90,7 @@ print("Hello, World!")
 
 Meet the contributors who made this project:
 
-- **[Afonso Simões](https://github.com/afonsosmiranda)**
+- **[Afonso Miranda](https://github.com/afonsosmiranda)**
   - Information:
     - Email: afonsoduartem@ua.pt
     - nMec: 100090
