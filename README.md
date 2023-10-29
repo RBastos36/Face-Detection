@@ -22,7 +22,7 @@ Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade
 
 
 <p align="center">
-Legenda da imagem 
+Vídeo ilustrativo do funcionamento do programa 
 </p>
 
 
