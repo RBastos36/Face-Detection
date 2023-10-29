@@ -18,6 +18,9 @@ Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade
   <img src="F3ubnBmXkAA2MAe.png" alt="Alt text">
 </p>
 
+[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/ce720d8c-52a7-4b54-b87b-4bc6f10ccda4)
+
+
 <p align="center">
 Legenda da imagem 
 </p>
