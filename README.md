@@ -89,7 +89,8 @@ Se os passos acima foram seguidos, o programa deve correr sem problemas.
 face_locations = face_recognition.face_locations(rgb_small_frame)
 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 ```
-<p align="justify"> É na base destes comandos, que se baseiam em modelos extreamemte eficientes treinados com deep learning, que o programa irá funcionar. Aqui são encontradas todas as localizações de caras no _frame_ e sofrem um _encoding_ para posteriormente serem comparadas com as caras guardadas na _Database_. Se o programa encontrar um nível de parecença elevado com alguma das informações da base de dados, irá reconhecer e cumprimentar a pessoa detetada. Ao mesmo tempo, um menu no Terminal estará a correr em pararelo (usando a biblioteca <b>Threading</b>) onde se poderá dar nome às pessoas detetadas como desconhecidas e ainda alterar o nome de qualquer pessoa presente na <i>Database</i>.</p>
+<p align="justify">É na base destes comandos, que se baseiam em modelos extreamemte eficientes treinados com deep learning, que o programa irá funcionar. Aqui são encontradas todas as localizações de caras no _frame_ e sofrem um _encoding_ para posteriormente serem comparadas com as caras guardadas na <i>Database</i>. Se o programa encontrar um nível de parecença elevado com alguma das informações da base de dados, irá reconhecer e cumprimentar a pessoa detetada.</p>
+<p align="justify">Ao mesmo tempo, um menu no Terminal estará a correr em pararelo (usando a biblioteca <b>Threading</b>) onde se poderá dar nome às pessoas detetadas como desconhecidas e ainda alterar o nome de qualquer pessoa presente na <i>Database</i>.</p>
 
 ---
 ## Autores
