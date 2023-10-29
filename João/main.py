@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
-# Afonso Simões, nMec100090
+# Afonso Miranda, nMec100090
 # João Nogueiro, nMec111807
 # Ricardo Bastos, nMec103983
 
@@ -136,9 +136,10 @@ def main():
     database_photos = []
 
     # Read database of saved images
-    if len(os.listdir("/Users/afonsomiranda/Desktop/Secretária – MacBook Pro de Afonso/Faculdade/Mestrado/1º Ano/1º Semestre/SAVI/TP1_SAVI/Database")) != 0:
-        for file in os.listdir("/Users/afonsomiranda/Desktop/Secretária – MacBook Pro de Afonso/Faculdade/Mestrado/1º Ano/1º Semestre/SAVI/TP1_SAVI/Database"):
-            if len(os.listdir("/Users/afonsomiranda/Desktop/Secretária – MacBook Pro de Afonso/Faculdade/Mestrado/1º Ano/1º Semestre/SAVI/TP1_SAVI/Database")) == 0:
+    directory_path = "Database"
+    if len(os.listdir(directory_path)) != 0:
+        for file in os.listdir(directory_path):
+            if len(os.listdir(directory_path)) == 0:
                 break
 
             if file.endswith(".jpg"):
