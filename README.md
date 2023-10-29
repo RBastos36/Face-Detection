@@ -1,16 +1,16 @@
 # TP1 - Detetor de Caras
 Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - 2023/24
 
-## Table of Contents
+## Índice
 
-- [Introduction](#introduction)
-- [Libraries Used](#libraries-used)
-- [Installation](#installation)
-- [Code Explanation](#code-explanation)
-- [Authors](#authors)
+- [Introdução](#introduction)
+- [Bibliotecas Usadas](#libraries-used)
+- [Instalação](#installation)
+- [Explicação do Código](#code-explanation)
+- [Autores](#authors)
 
 ---
-## Introduction
+## Introdução
 
 No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na Database, e questionando os desconhecidos sobre os seus nomes.
 
@@ -33,27 +33,39 @@ Legenda do gif animado
 
 
 ---
-## Libraries Used
+## Bibliotecas Usadas
 
 Para a criação deste programa, recorreu-se à utilização de algumas bibliotecas. Estas serão brevemente explicadas abaixo.
 
-- **Library Name 1**
-  - Description: Brief description of the first library.
-  - Installation:
+- **OpenCV**
+  - Descrição: OpenCV é uma biblioteca que existe em Python desenhada para resolver problemas de _computer vision_. 
+  - Instalação:
     ```bash
-    command to install the first library
+    sudo apt-get install python3-opencv
     ```
 
-- **Library Name 2**
-  - Description: Brief description of the second library.
-  - Installation:
+- **Face-Recognition**
+  - Descrição: Biblioteca de Python com comandos para reconhecer e manipular caras criada com modelos baseados em _deep learning_. 
+  - Instalação:
     ```bash
-    command to install the second library
+    pip3 install face_recognition
     ```
+
+- **PyTTSx3**
+  - Descrição: Esta é uma biblioteca de Python para fazer conversão de texto para voz, funcionando _offline_ e sendo compatível com Python 2 e 3.
+  - Instalação:
+    ```bash
+    pip install pyttsx3
+    ```
+
+- **Threading**
+  - Descrição: Esta bibioteca permite introduzir uma sequência de intruções num programa que podem ser executadas independentemente do restante processo.
+  - Instalação:
+Esta já vem disponível com a versão do Python 3.7.
 
 
 ---
-## Installation
+## Instalação
 
 Provide step-by-step instructions on how to install and set up your project. Include any prerequisites that users need to have installed.
 
@@ -71,7 +83,7 @@ npm install  # or any other package manager and command based on your project
 ```
 
 ---
-## Code Explanation 
+## Explicação do Código 
 
 Provide a concise explanation of your project.
 Provide a concise explanation of your project.
@@ -86,21 +98,21 @@ print("Hello, World!")
 
 
 ---
-## Authors
+## Autores
 
 Estes foram os contribuidores para este projeto:
 
 - **[Afonso Miranda](https://github.com/afonsosmiranda)**
-  - Information:
+  - Informação:
     - Email: afonsoduartem@ua.pt
-    - nMec: 100090
+    - Número Mecanográfico: 100090
 
 - **[João Nogueiro](https://github.com/joaonogueiro)**
-  - Information:
+  - Informação:
     - Email:
-    - nMec: 111807
+    - Número Mecanográfico: 111807
 
 - **[Ricardo Bastos](https://github.com/RBastos36)**
-  - Information:
+  - Informação:
     - Email: r.bastos@ua.pt
-    - nMec: 103983
+    - Número Mecanográfico: 103983
