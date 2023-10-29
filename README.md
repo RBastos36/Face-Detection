@@ -66,11 +66,7 @@ git clone https://github.com/joaonogueiro/TP1_SAVI
 ```bash
 cd TP1_SAVI
 ```
-3. Instalar dependências:
-```bash
-npm install  # or any other package manager and command based on your project
-```
-4. Correr o programa:
+3. Correr o programa:
 ```bash
 ./main.py
 ```
