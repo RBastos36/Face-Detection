@@ -133,7 +133,7 @@ def main():
     database_photos = []
 
     # Read database of saved images
-    if len(os.listdir("Database")) != 0:
+    if len(os.listdir("/Users/afonsomiranda/Desktop/Secretária – MacBook Pro de Afonso/Faculdade/Mestrado/1º Ano/1º Semestre/SAVI/TP1_SAVI/Database")) != 0:
         for file in os.listdir("Database"):
             if len(os.listdir("Database")) == 0:
                 break
