@@ -14,12 +14,11 @@ Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade
 
 <p align="justify"> No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na Database, e questionando os desconhecidos sobre os seus nomes. </p>
 
-<p align="center">
-  <img src="F3ubnBmXkAA2MAe.png" alt="Alt text">
-</p>
+[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/ce720d8c-52a7-4b54-b87b-4bc6f10ccda4)
+
 
 <p align="center">
-Legenda da imagem 
+Vídeo ilustrativo do funcionamento do programa 
 </p>
 
 
@@ -73,7 +72,7 @@ npm install  # or any other package manager and command based on your project
 ```
 4. Correr o programa:
 ```bash
-# Additional setup steps, if any
+./main.py
 ```
 
 Se os passos acima foram seguidos, o programa deve correr sem problemas.
