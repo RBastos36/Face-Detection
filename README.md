@@ -23,15 +23,6 @@ Legenda da imagem
 </p>
 
 
-<p align="center">
-  <img src="89ba9f42123571.5947aba8033ef.gif" alt="Alt text">
-</p>
-
-<p align="center">
-Legenda do gif animado 
-</p>
-
-
 ---
 ## Bibliotecas Usadas
 
@@ -68,19 +59,19 @@ Para a criação deste programa, recorreu-se à utilização de algumas bibliote
 
 O programa pode ser instalado seguindo os seguintes passos:
 
-1. Clonar o repositório.
+1. Clonar o repositório:
 ```bash
 git clone https://github.com/joaonogueiro/TP1_SAVI
 ```
-1. Alterar a diretória do projeto.
+2. Alterar a diretória do projeto:
 ```bash
 cd TP1_SAVI
 ```
-1. Instalar dependências.
+3. Instalar dependências:
 ```bash
 npm install  # or any other package manager and command based on your project
 ```
-1. Correr o programa.
+4. Correr o programa:
 ```bash
 # Additional setup steps, if any
 ```
@@ -91,16 +82,14 @@ Se os passos acima foram seguidos, o programa deve correr sem problemas.
 ---
 ## Explicação do Código 
 
-Provide a concise explanation of your project.
-Provide a concise explanation of your project.
-Provide a concise explanation of your project.
+O código começa por verificar se existe alguma informação na base de dados, e se assim se verificar, lê a mesma. De seguida, inicializa a câmera e começa a tentar encontrar deteções de caras com os comandos abaixo.
 
 ```python
-def add_numbers(a, b):
-    return a + b
-
-print("Hello, World!")
+# Find all the faces and face encodings in the current frame of video
+face_locations = face_recognition.face_locations(rgb_small_frame)
+face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 ```
+É na base destes comandos, que se baseiam em modelos extreamemte eficientes treinados com deep learning, que o programa irá funcionar. Aqui são encontradas todas as localizações de caras no _frame_ e sofrem um _encoding_ para posteriormente serem comparadas com as caras guardadas na _Database_. Se o programa encontrar um nível de parecença elevado com alguma das informações da base de dados, irá reconhecer e cumprimentar a pessoa detetada. Ao mesmo tempo, um menu no Terminal estará a correr em pararelo (usando a biblioteca Threading) onde se poderá dar nome às pessoas detetadas como desconhecidas e ainda alterar o nome de qualquer pessoa presente na _Database_.
 
 
 ---
