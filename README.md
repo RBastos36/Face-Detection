@@ -1,5 +1,5 @@
 # TP1 - Detetor de Caras
-Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - 2023/24
+Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade de Aveiro - 2023/24
 
 ## Índice
 
