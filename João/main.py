@@ -18,28 +18,19 @@ from matplotlib import pyplot as plot
 
 def menu():
         print("""
-            (1) Clear Data Base
-            (2) Add person to database
-            (3) Edit Names of database
-        
-            (q) Stop
+        (1) Add person to database
+        (2) Edit Names of database
+        (q) Stop
           """)
         
         while True:
-            op = input("Option: ")
+            op = input("\nOption: ")
 
             if op == '1':
-                print("Clear database....")
-                print(len(database_photos))
-                known_face_encodings.clear()
-                known_face_names.clear()
-                database_photos.clear()
-                data_show.clear()
-                cv2.destroyWindow('Database')
-                print("clean")
-                #Não está a funcionar bem...
+                if len(Unknown_face_names) == 0:
+                    print("No have unknown faces")
+                    continue
 
-            elif op == '2':
                 print("Who what add database?\n")
 
                 # Print the Unknown names
@@ -51,7 +42,7 @@ def menu():
                 person_idx = input("Person: ")
 
                 while int(person_idx) not in range(len(Unknown_face_names)):
-                    print("FORA DE RANGE")
+                    print("Out of range")
                     person_idx = input("Person: ")
                     if person_idx == 'e':
                         break
@@ -62,19 +53,24 @@ def menu():
                 engine.runAndWait()
                 hellos.append(name)
 
-                cv2.imwrite("Database/" + name.lower() + ".jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
-                image = face_recognition.load_image_file("Database/" + name.lower() + ".jpg")
+                cv2.imwrite("Database/" + name + ".jpg", Unknown_image[int(person_idx)])
+                image = face_recognition.load_image_file("Database/" + name + ".jpg")
                 image_encoding = face_recognition.face_encodings(image)[0]
+               
                 known_face_encodings.append(image_encoding)
                 known_face_names.append(name)
                 database_photos.append(image)
 
                 Unknown_face_names.pop(int(person_idx)) 
                 Unknown_face_encodings.pop(int(person_idx))
-
+                Unknown_image.pop(int(person_idx))
                 
-            elif op == '3':
-                print("What name do you want to change??")
+            elif op == '2':
+                if len(known_face_names) == 0:
+                    print("No have names in database")
+                    continue
+
+                print("What name do you want to change?")
                 
                 for i in range(len(known_face_names)):
                     print(f"  ({i}) {known_face_names[i]}")
@@ -88,20 +84,19 @@ def menu():
 
                 new_name = str(input("Press 'q' if you want to cancel\nNew name? "))
                 if new_name == 'q':
-                    break
+                    continue
                 old_name = known_face_names[person_idx]
                 known_face_names[person_idx] = new_name
 
-                # old_file = os.path.join("Database", old_name + ".jpg")
-                # new_file = os.path.join("Database", new_name + ".jpg")
-                # print(old_file)
-                # os.rename(old_file, new_name)
+                old_file = f"Database/{old_name}.jpg"
+                new_file = f"Database/{new_name}.jpg"
+                os.rename(old_file, new_file)
 
-                
             elif op == 'q':
+                print("Exit program...")
                 break
             else:
-                print("Opção inválida. Tente novamente.")
+                print("Invalid option! Try again.")
 
 def main():
 
@@ -113,23 +108,21 @@ def main():
 
     # Global variables
     global known_face_names
-    global Unknown_face_names
     global known_face_encodings
-    global database_photos
-    global engine
-    global hellos
-    global small_frame
-    global face_locations
-    global idx
+    global Unknown_face_names
     global Unknown_face_encodings
+    global Unknown_image
     global database_photos
     global data_show
-
+    global engine
+    global hellos
+    
     # Create arrays of known and Unknown face encodings and their names
     known_face_encodings = []
     known_face_names = []
     Unknown_face_encodings = []
     Unknown_face_names = []
+    Unknown_image = []
     database_photos = []
 
     # Read database of saved images
@@ -158,6 +151,7 @@ def main():
     # Initialization voice greeting
     hellos = []
     engine = pyttsx3.init()
+    print(engine)
     video_frame_number = 0
 
     print("""
@@ -197,7 +191,6 @@ def main():
             small_frame = cv2.resize(image_rgb, (0, 0), fx=0.5, fy=0.5)
 
             # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-            # rgb_small_frame = small_frame[:, :, ::-1] 
             rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1]) #Invert the color channels
 
             # Find all the faces and face encodings in the current frame of video
@@ -213,7 +206,7 @@ def main():
                 # See if the face is a match for the known face(s)
                 if len(known_face_encodings) != 0:
                  
-                    matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                    matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.7)
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
                                         
@@ -227,7 +220,7 @@ def main():
 
                 if len(Unknown_face_encodings) != 0:
                  
-                    matches = face_recognition.compare_faces(Unknown_face_encodings, face_encoding)
+                    matches = face_recognition.compare_faces(Unknown_face_encodings, face_encoding, tolerance=0.7)
                     face_distances = face_recognition.face_distance(Unknown_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
                
@@ -237,22 +230,24 @@ def main():
 
                 if name == None:
                     name = "Unknown_" + str(Unknown_num)
-                    Unknown_face_encodings.append(face_encoding)
-                    Unknown_face_names.append(name)
+                    Unknown_image.append(small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
                     Unknown_num +=1
-# # 
-#                 if name == "Unknown":
-#                     name = input("What is your name? ")
-#                     engine.say("Hello " + name)
-#                     engine.runAndWait()
-#                     hellos.append(name)
-#                     cv2.imwrite("Database/" + name.lower() + ".jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
-#                     image = face_recognition.load_image_file("Database/" + name.lower() + ".jpg")
-#                     image_encoding = face_recognition.face_encodings(image)[0]
-#                     known_face_encodings.append(image_encoding)
-#                     known_face_names.append(name)
-#                     database_photos.append(image)
 
+                     # Exception handling for when the saved detection is "corrupted" and saves image without recognisable face
+                    try:
+                       Unknown_face_encodings.append(face_encoding)
+                       Unknown_face_names.append(name)
+                       cv2.imwrite("Database/TESTE.jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
+                       image = face_recognition.load_image_file("Database/TESTE.jpg")
+                       face_recognition.face_encodings(image)[0]
+                       os.remove("Database/TESTE.jpg")
+
+                    except IndexError:
+                        # print("Database loading ERROR! Deleting corrupted file!")
+                        Unknown_face_names.pop(-1) 
+                        Unknown_face_encodings.pop(-1)
+                        Unknown_image.pop(-1)
+                
                 face_names.append(name)
 
         process_this_frame = not process_this_frame 
@@ -270,7 +265,7 @@ def main():
             detection_idx += 1
 
         all_detections = copy.deepcopy(detections)
-
+   
         # --------------------------------------
         # Visualization
         # --------------------------------------
@@ -281,6 +276,9 @@ def main():
 
         # Show database
         if len(database_photos) > len_old_database or old_known_face_names != known_face_names:
+
+            if len(database_photos) == 0:
+                break
 
             cv2.namedWindow('Database',cv2.WINDOW_NORMAL)
             cv2.moveWindow('Database', 0, int(height)+30)
@@ -300,7 +298,7 @@ def main():
             
             # Put the names in the database image view
             for i in range(len(images)):
-                cv2.rectangle(images[i], (0,0), (70,20), (0, 0, 0), cv2.FILLED)
+                cv2.rectangle(images[i], (0,0), (90,20), (0, 0, 0), cv2.FILLED)
                 cv2.putText(images[i], str(known_face_names[i]), (5,17), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
             current_width = 0
@@ -314,10 +312,6 @@ def main():
             cv2.imshow('Database', data_show)
             len_old_database = len(database_photos)
             old_known_face_names = copy.deepcopy(known_face_names)
-
-        # if len(database_photos) == 0 and video_frame_number != 0:
-        #     if cv2.getWindowProperty('Database', cv2.WND_PROP_VISIBLE):
-        #         cv2.destroyWindow('Database')
 
         if video_frame_number == 0:
             cv2.namedWindow('FaceTracker',cv2.WINDOW_NORMAL)

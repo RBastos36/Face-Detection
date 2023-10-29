@@ -1,24 +1,25 @@
+#!/usr/bin/env python3
 # Sistemas Avançados de Visão Industrial (SAVI 23-24)
 # Grupo 6, DEM, UA
 # Afonso Miranda, nMec100090
 # João Nogueiro, nMec111807
 # Ricardo Bastos, nMec103983
 
+
 import copy
 # import csv
 # import math
 # import time
-from random import random
+from random import randint
 import face_recognition
 import cv2
 import numpy as np
 from track import Detection, Track, computeIOU
-
+from gui import ImageApp
 # from colorama import Fore, Back, Style
 import os, sys
 import pyttsx3
 from matplotlib import pyplot as plot
-
 from threading import Thread    # Threading library for parallel tasks
 
 
@@ -32,7 +33,6 @@ def main():
     # Create arrays of known face encodings and their names
     known_face_encodings = []
     known_face_names = []
-
     database_photos = []
 
     # Read database of saved images
@@ -54,11 +54,8 @@ def main():
     face_names = []
     process_this_frame = True
     len_old_database = 0
-# --------------------------------------
     hellos = []
-    engine = pyttsx3.init('dummy')
-
-    print(engine)
+    engine = pyttsx3.init()
 
     # Parameters
     distance_threshold = 100
@@ -66,8 +63,7 @@ def main():
     iou_threshold = 0.3
 
     video_frame_number = 0
-    person_count = 0
-    tracks = []
+
 
     # --------------------------------------
     # Execution
@@ -80,14 +76,14 @@ def main():
             break
 
         image_rgb = cv2.flip(image_rgb, 1)
-
         frame_stamp = round(float(cap.get(cv2.CAP_PROP_POS_MSEC))/1000,2)
         height, width, _ = image_rgb.shape
-        image_gui = copy.deepcopy(image_rgb) # good practice to have a gui image for drawing
+        image_gui = copy.deepcopy(image_rgb)    # good practice to have a gui image for drawing
     
         # ------------------------------------------------------
         # Detect people using Face Recognition
         # ------------------------------------------------------
+
         # Only process every other frame of video to save time
         if process_this_frame:
             # Resize frame of video to 1/4 size for faster face recognition processing
@@ -99,18 +95,17 @@ def main():
             # Find all the faces and face encodings in the current frame of video
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-            # print(face_locations)
-            # print(face_encodings)
 
             face_names = []
-
+            
+            # Loop to check if faces are known
             for idx, face_encoding in enumerate(face_encodings):
                 # See if the face is a match for the known face(s)
                 if len(known_face_encodings) != 0:
                     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                 name = "Unknown"
 
-                # Or instead, use the known face with the smallest distance to the new face
+                # Find the known face with the smallest distance to the new face
                 if len(known_face_encodings) != 0:
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
@@ -122,14 +117,17 @@ def main():
                             hellos.append(name)
                 face_names.append(name)
 
+                # Ask for Unknown detection and Save it
                 if name.lower() == "unknown":
                     name = input("What is your name? ")
                     engine.say("Hello " + name)
                     engine.runAndWait()
                     hellos.append(name)
-                    cv2.imwrite("Database/" + name.lower() + ".jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30, face_locations[idx][3]-30:face_locations[idx][1]+30])
+                    cv2.imwrite("Database/" + name.lower() + ".jpg", small_frame[face_locations[idx][0]-30:face_locations[idx][2]+30,
+                                                                                 face_locations[idx][3]-30:face_locations[idx][1]+30])
                     image = face_recognition.load_image_file("Database/" + name.lower() + ".jpg")
                     
+                    # Exception handling for when the saved detection is "corrupted" and saves image without recognisable face
                     try:
                         image_encoding = face_recognition.face_encodings(image)[0]
                         known_face_encodings.append(image_encoding)
@@ -139,7 +137,7 @@ def main():
 
                     except IndexError:
                         print("Database loading ERROR! Deleting corrupted file!")
-                        os.remove("Database/" + name.lower() + ".jpg")
+                        os.remove("Database/" + name.lower() + ".jpg")      # Delete "corrupted" file
                 
 
         process_this_frame = not process_this_frame
@@ -157,52 +155,6 @@ def main():
             detection_idx += 1
 
         all_detections = copy.deepcopy(detections)
-
-        # ------------------------------------------------------
-        # Association step. Associate detections with tracks
-        # ------------------------------------------------------
-        # idxs_detections_to_remove = []
-        # for idx_detection, detection in enumerate(detections):
-        #     for track in tracks:
-        #         if not track.active:
-        #             continue
-        #         # track.update(detection) # add detection to track
-        #         # idxs_detections_to_remove.append(idx_detection)
-                
-        #         # --------------------------------------
-        #         # Using IOU
-        #         # --------------------------------------
-        #         iou = computeIOU(detection, track.detections[-1])
-        #         print('IOU( ' + detection.detection_id + ' , ' + track.track_id + ') = ' + str(iou))
-        #         if iou > iou_threshold: # This detection belongs to this tracker!!!
-        #             track.update(detection) # add detection to track
-        #             idxs_detections_to_remove.append(idx_detection)
-        #             break # do not test this detection with any other track
-
-        # idxs_detections_to_remove.reverse()
-
-        # print('idxs_detections_to_remove ' + str(idxs_detections_to_remove))
-        # for idx in idxs_detections_to_remove:
-        #     print(detections)
-        #     print('deleting detection idx ' + str(idx))
-        #     del detections[idx]
-
-        # # --------------------------------------
-        # # Create new trackers
-        # # --------------------------------------
-        # for detection in detections:
-        #     color = (randint(0, 255), randint(0, 255), randint(0, 255))
-        #     track = Track(name, detection, color=color)
-        #     tracks.append(track)
-        #     person_count += 1
-
-        # # --------------------------------------
-        # # Deactivate tracks if last detection has been seen a long time ago
-        # # --------------------------------------
-        # for track in tracks:
-        #     time_since_last_detection = frame_stamp - track.detections[-1].stamp
-        #     if time_since_last_detection > deactivate_threshold:
-        #         track.active = False
                
         # --------------------------------------
         # Visualization
@@ -213,34 +165,20 @@ def main():
             detection.draw(image_gui, (255,0,0))
 
 
-        # Draw list of tracks
-        # for track in tracks:
-        #     if not track.active:
-        #         continue
-        #     track.draw(image_gui)
-
-        # Show database
+        # Show database and update it in real time when new face is added
         if len(database_photos) > len_old_database:
-            cv2.namedWindow('Database',cv2.WINDOW_NORMAL)
-            
-            # max_height = max(image.shape[0] for image in database_photos)
-            # combined_width = sum(image.shape[1] for image in database_photos)
-            # combined_image = np.zeros((max_height, combined_width, 3), dtype=np.uint8)
-
-            # current_width = 0
-            # for image in database_photos:
-            #     combined_image[:image.shape[0], current_width:current_width + image.shape[1]] = image
-            #     current_width += image.shape[1]
-
-            # data_show = np.ascontiguousarray(combined_image[:, :, ::-1])
+            cv2.namedWindow('Database',cv2.WINDOW_NORMAL)   # Initializing new window for the Database
 
             images = copy.deepcopy(database_photos)
             max_height = max(image.shape[0] for image in database_photos)
+
+            # Resizing image to the height of the tallest one
             for i, image in enumerate(images):
                 if image.shape[0] < max_height:
                     scale_factor = max_height / image.shape[0]
                     images[i] = cv2.resize(image, (int(image.shape[1] * scale_factor), max_height))
             
+            # 
             combined_width = sum(image.shape[1] for image in images)
             combined_image = np.zeros((max_height, combined_width, 3), dtype=np.uint8)
 
@@ -254,21 +192,7 @@ def main():
             cv2.imshow('Database', data_show)
             len_old_database = len(database_photos)
 
-
-            # fig = plot.figure(figsize=(10, 7))
-            # rows = len(database_photos)
-            # columns = 1
-            # for n in range(int(len(database_photos))):
-            #     fig.add_subplot(rows, columns, n + 1)
-            #     plot.imshow(database_photos[n])
-            #     plot.axis('off')
-            #     plot.title(known_face_names[n])
-            #     plot.tight_layout()
-
-            # plot.show()
-
-
-
+        # Initializing FaceTracker window and resizing it 
         if video_frame_number == 0:
             cv2.namedWindow('FaceTracker',cv2.WINDOW_NORMAL)
             cv2.resizeWindow('FaceTracker', int(width), int(height))
@@ -287,27 +211,21 @@ def main():
         video_frame_number += 1
 
 
-def end_prog():
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        sys.exit()
-
 
 if __name__ == "__main__":
 
+    # Creting Threads for the face detector and interface, respectively
     thread_1 = Thread(target=main)
     thread_2 = Thread(target=ImageApp().run)
-    thread_3 = Thread(target=end_prog)
 
+    # Setting Thread as Daemon to not block the main code
     thread_1.setDaemon(True)
     thread_2.setDaemon(True)
-    thread_3.setDaemon(True)
 
+    # Starting Threads
     thread_1.start()
     thread_2.start()
-    thread_3.start()
 
+    # Joining Thread to the main block after finishing
     thread_1.join()
     thread_2.join()
-    thread_3.join()
-
-    exit()
