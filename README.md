@@ -12,10 +12,9 @@ Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade
 ---
 ## Introdução
 
-<p align="justify"> No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar e seguir as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na <i>Database</i> e questionando os desconhecidos sobre os seus nomes. </p>
+<p align="justify"> No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar e seguir as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na <i>Database</i> e questionando os desconhecidos sobre os seus nomes. <br> Relativamente às opções adicionais, o utilizador tem a possibilidade alterar os nomes das pessoas, registadas previamente na base de dados. </p>
 
-[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/ce720d8c-52a7-4b54-b87b-4bc6f10ccda4)
-
+[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/ea406c66-d973-449f-b264-e970a7e82296)
 
 <p align="center">
 Vídeo ilustrativo do funcionamento do programa 
