@@ -9,11 +9,11 @@ import copy
 import face_recognition
 import cv2
 import numpy as np
-from track import Detection
+from track import Detection, Track, computeIOU
 import os
 import pyttsx3
 import threading
-
+from random import randint
 
 # Console menu to Add or Edit a person to the Database
 def menu():
@@ -139,7 +139,13 @@ def main():
     Unknown_face_names = []
     Unknown_image = []
     database_photos = []
+    tracks = []
 
+    # Parameters
+    deactivate_threshold = 5.0 # secs
+    iou_threshold = 0.3
+    person_count = 0
+ 
     # Read database of saved images
     directory_path = "Database"
     if len(os.listdir(directory_path)) != 0:
@@ -268,6 +274,44 @@ def main():
             detection_idx += 1
 
         all_detections = copy.deepcopy(detections)
+
+         # ------------------------------------------------------
+        # Association step. Associate detections with tracks
+        # ------------------------------------------------------
+        idxs_detections_to_remove = []
+        for idx_detection, detection in enumerate(detections):
+            for track in tracks:
+                if not track.active:
+                    continue
+  
+                # --------------------------------------
+                # Using IOU 
+                # --------------------------------------
+                iou = computeIOU(detection, track.detections[-1])
+          
+                if iou > iou_threshold: # This detection belongs to this tracker!!!
+                    track.update(detection) # add detection to track
+                    idxs_detections_to_remove.append(idx_detection)
+                    break # do not test this detection with any other track
+
+        idxs_detections_to_remove.reverse()
+
+        # --------------------------------------
+        # Create new trackers
+        # --------------------------------------
+        for detection in detections:
+            color = (randint(0, 255), randint(0, 255), randint(0, 255))
+            track = Track('T' + str(person_count), detection, color=color)
+            tracks.append(track)
+            person_count += 1
+
+        # --------------------------------------
+        # Deactivate tracks if last detection has been seen a long time ago
+        # --------------------------------------
+        for track in tracks:
+            time_since_last_detection = frame_stamp - track.detections[-1].stamp
+            if time_since_last_detection > deactivate_threshold:
+                track.active = False
    
         # --------------------------------------
         # Visualization
@@ -276,6 +320,12 @@ def main():
         # Draw list of all detections (including those associated with the tracks)
         for detection in all_detections:
             detection.draw(image_gui, (255,0,0))
+
+            # Draw list of tracks
+        for track in tracks:
+            if not track.active:
+                continue
+            track.draw(image_gui)
 
         # Show database in new window
         if len(database_photos) > len_old_database or old_known_face_names != known_face_names:
