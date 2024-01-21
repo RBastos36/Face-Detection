@@ -63,7 +63,7 @@ git clone https://github.com/joaonogueiro/TP1_SAVI
 ```
 2. Alterar a diretória do projeto:
 ```bash
-cd TP1_SAVI
+cd SAVI-TP1
 ```
 3. Correr o programa:
 ```bash
