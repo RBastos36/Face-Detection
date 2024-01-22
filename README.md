@@ -1,5 +1,5 @@
 # SAVI - Practical Assignment 1
-Advanced Industrial Visualization Systems (Sistemas Avançados de Visualização Industrial) - Group 6 - University of Aveiro - 2023/24
+Advanced Industrial Visualization Systems (**S**istemas **A**vançados de **V**isualização **I**ndustrial) - Group 6 - University of Aveiro - 2023/24
 
 ## Table of Contents
 
