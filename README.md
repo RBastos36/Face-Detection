@@ -1,107 +1,109 @@
-# TP1 - Detetor de Caras
-Sistemas Avançados de Visualização Industrial (SAVI) - Grupo 6 - Universidade de Aveiro - 2023/24
+# SAVI - Practical Assignment 1
+Advanced Industrial Visualization Systems (Sistemas Avançados de Visualização Industrial) - Group 6 - University of Aveiro - 2023/24
 
-## Índice
+## Table of Contents
 
-- [Introdução](#introduction)
-- [Bibliotecas Usadas](#libraries-used)
-- [Instalação](#installation)
-- [Explicação do Código](#code-explanation)
-- [Autores](#authors)
+- [Introduction](#introduction)
+- [Libraries Used](#libraries-used)
+- [Installation](#installation)
+- [Code Explanation](#code-explanation)
+- [Authors](#authors)
 
 ---
-## Introdução
+## Introduction
 
-<p align="justify"> No âmbito da Unidade Curricular de SAVI, foi criado um programa capaz de detetar e seguir as caras das pessoas que se aproximem da câmera, reconhecendo e cumprimentando as pessoas que já tem guardadas na <i>Database</i> e questionando os desconhecidos sobre os seus nomes. <br> Relativamente às opções adicionais, o utilizador tem a possibilidade alterar os nomes das pessoas, registadas previamente na base de dados. </p>
+<p align="justify"> In this assignment, a program has been created capable of detecting and tracking faces of individuals approaching the camera, recognizing and greeting people already saved in the Database and questioning strangers about their names. Regarding additional options, the user has the possibility of changing the names of individuals previously registered in the Database.</p>
 
-[Video.webm](https://github.com/joaonogueiro/TP1_SAVI/assets/114345550/8f64f7c6-c3a3-4698-b44e-39805258fb01)
+[SAVI - TP1 - Demo](https://github.com/RBastos36/SAVI-TP1/assets/145439743/68df23d6-3c08-4bec-b5fc-8decbdaa8c51)
 
 <p align="center">
-Vídeo ilustrativo do funcionamento do programa 
+Demonstration of how the program works.
 </p>
 
 
 ---
-## Bibliotecas Usadas
+## Libraries Used
 
-Para a criação deste programa, recorreu-se à utilização de algumas bibliotecas. Estas serão brevemente explicadas abaixo.
+To run the program and scripts presented in this repository, some libraries need to be installed beforehand. These are the following:
 
 - **OpenCV**
-  - Descrição: OpenCV é uma biblioteca que existe em Python desenhada para resolver problemas de _computer vision_. 
-  - Instalação:
+  - Description: this library allows for easy problem solving involving image processing and computer vision.
+  - Installation:
     ```bash
     sudo apt-get install python3-opencv
     ```
 
 - **Face-Recognition**
-  - Descrição: Biblioteca de Python com comandos para reconhecer e manipular caras criada com modelos baseados em _deep learning_. 
-  - Instalação:
+  - Description: library that provides functions to recognize and manipulate faces using models created through deep learning.
+  - Installation:
     ```bash
     pip3 install face_recognition
     ```
 
 - **PyTTSx3**
-  - Descrição: Esta é uma biblioteca de Python para fazer conversão de texto para voz, funcionando _offline_ e sendo compatível com Python 2 e 3.
-  - Instalação:
+  - Description: library used to convert text to speech, with the ability to work offline. This library is compatible with Pyhton 2 and 3.
+  - Installation:
     ```bash
     pip install pyttsx3
     ```
 
 - **Threading**
-  - Descrição: Esta bibioteca permite introduzir uma sequência de intruções num programa que podem ser executadas independentemente do restante processo.
-  - Instalação: Esta já vem disponível com a versão do Python 3.7.
+  - Description: this library allows to introduce a sequence of instructions that can be executed independently from the rest of the process.
+  - Installation: This library already comes available with Python 3.7 and above.
 
 
 ---
-## Instalação
+## Installation
 
-O programa pode ser instalado seguindo os seguintes passos:
+The program can be installed by following the steps below:
 
-1. Clonar o repositório:
+1. Clone the repository:
 ```bash
 git clone https://github.com/joaonogueiro/TP1_SAVI
 ```
-2. Alterar a diretória do projeto:
+2. Change into the project directory:
 ```bash
 cd SAVI-TP1
 ```
-3. Correr o programa:
+3. Run the program:
 ```bash
 ./main.py
 ```
 
-Se os passos acima foram seguidos, o programa deve correr sem problemas.
+If the steps presented above are followed, the program should run with no problems.
 
 
 ---
-## Explicação do Código 
+## Code Explanation
 
-<p align="justify"> O código começa por verificar se existe alguma informação na base de dados, e se assim se verificar, lê a mesma. De seguida, inicializa a câmera e começa a tentar encontrar deteções de caras com os comandos abaixo, baseados na biblioteca <b>Face-Recognition</b>.</p>
+<p align="justify"> The code begins to verify if there is any information inside the Database and, if it finds any, reads it. Afterwards, the camera is initialized and begins detecting faces using the commands below, based on the <b>Face-Recognition</b> library.</p>
 
 ```python
 # Find all the faces and face encodings in the current frame of video
 face_locations = face_recognition.face_locations(rgb_small_frame)
 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 ```
-<p align="justify">É na base destes comandos, que se baseiam em modelos extreamemte eficientes treinados com deep learning, que o programa irá funcionar. Aqui são encontradas todas as localizações de caras no _frame_ e sofrem um _encoding_ para posteriormente serem comparadas com as caras guardadas na <i>Database</i>. Se o programa encontrar um nível de parecença elevado com alguma das informações da base de dados, irá reconhecer e cumprimentar a pessoa detetada. Além disto, o programa ainda faz o seguimento de cada pessoa.</p>
-<p align="justify">Ao mesmo tempo, um menu no Terminal estará a correr em pararelo (usando a biblioteca <b>Threading</b>) onde se poderá dar nome às pessoas detetadas como desconhecidas e ainda alterar o nome de qualquer pessoa presente na <i>Database</i>.</p>
+
+<p align="justify">It is based on these commands, which rely on extremely efficient models trained with deep learning, that the program will mainly operate. Here, all face locations in the frame are identified and undergo an encoding for later comparison with the faces stored in the Database. If the program finds a high enough similarity level with any information in the Database, it will recognize and greet the person detected. Additionally, the program also tracks each individual.</p>
+
+<p align="justify">At the same time, a menu in the Terminal will be running in parallel (using the <b>Threading</b> library), allowing the user to name each unknown individual and also change the name of any person present in the Database.</p>
 
 ---
-## Autores
+## Authors
 
-Estes foram os contribuidores para este projeto:
+These are the contributors who made this project possible:
 
 - **[Afonso Miranda](https://github.com/afonsosmiranda)**
-  - Informação:
+  - Information:
     - Email: afonsoduartem@ua.pt
-    - Número Mecanográfico: 100090
+    - NMec: 100090
 
 - **[João Nogueiro](https://github.com/joaonogueiro)**
-  - Informação:
+  - Information:
     - Email: joao.nogueiro@ua.pt
-    - Número Mecanográfico: 111807
+    - NMec: 111807
 
 - **[Ricardo Bastos](https://github.com/RBastos36)**
-  - Informação:
+  - Information:
     - Email: r.bastos@ua.pt
-    - Número Mecanográfico: 103983
+    - NMec: 103983
