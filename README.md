@@ -14,7 +14,7 @@ Advanced Industrial Visualization Systems (Sistemas Avançados de Visualização
 
 <p align="justify"> In this assignment, a program has been created capable of detecting and tracking faces of individuals approaching the camera, recognizing and greeting people already saved in the Database and questioning strangers about their names. Regarding additional options, the user has the possibility of changing the names of individuals previously registered in the Database.</p>
 
-[SAVI - TP1 - Demo](https://github.com/RBastos36/SAVI-TP1/assets/145439743/68df23d6-3c08-4bec-b5fc-8decbdaa8c51)
+[SAVI_TP1_Demo](https://github.com/RBastos36/SAVI-TP1/assets/145439743/68df23d6-3c08-4bec-b5fc-8decbdaa8c51)
 
 <p align="center">
 Demonstration of how the program works.
