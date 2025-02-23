@@ -1,5 +1,5 @@
 # SAVI - Practical Assignment 1
-Advanced Industrial Visualization Systems (**S**istemas **A**vançados de **V**isualização **I**ndustrial) - Group 6 - University of Aveiro - 2023/24
+Advanced Systems of Industrial Vision (**S**istemas **A**vançados de **V**isualização **I**ndustrial) - Group 6 - University of Aveiro - 2023/24
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ Demonstration of how the program works.
 To run the program and scripts presented in this repository, some libraries need to be installed beforehand. These are the following:
 
 - **OpenCV**
-  - Description: this library allows for easy problem solving involving image processing and computer vision.
+  - Description: this library allows for easy problem-solving involving image processing and computer vision.
   - Installation:
     ```bash
     sudo apt-get install python3-opencv
@@ -41,7 +41,7 @@ To run the program and scripts presented in this repository, some libraries need
     ```
 
 - **PyTTSx3**
-  - Description: library used to convert text to speech, with the ability to work offline. This library is compatible with Pyhton 2 and 3.
+  - Description: library used to convert text to speech, with the ability to work offline. This library is compatible with Python 2 and 3.
   - Installation:
     ```bash
     pip install pyttsx3
@@ -79,7 +79,7 @@ If the steps presented above are followed, the program should run with no proble
 <p align="justify"> The code begins to verify if there is any information inside the Database and, if it finds any, reads it. Afterwards, the camera is initialized and begins detecting faces using the commands below, based on the <b>Face-Recognition</b> library.</p>
 
 ```python
-# Find all the faces and face encodings in the current frame of video
+# Find all the faces and face encodings in the current frame of the video
 face_locations = face_recognition.face_locations(rgb_small_frame)
 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 ```
